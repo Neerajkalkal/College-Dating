@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.CollegeDating" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- In res/values/styles.xml -->
+    <style name="Theme.AppCrop" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your UCrop theme here -->
+    </style>
+
+</resources>
