@@ -76,8 +76,11 @@ import com.example.collegedating.model.CollegeList.CollegeListItem
 import com.example.collegedating.model.DataOrException
 import com.example.collegedating.model.adduser.BasicProfileDetails
 import com.example.collegedating.navigation.Screen
+import com.example.collegedating.networkrepository.NetworkCalls.bitmapToByteArray
 import com.example.collegedating.screens.CustomButton
 import com.example.collegedating.screens.loadingscreen.LoadingScreen
+import com.example.collegedating.tokenmanagement.TokenManagement
+import com.example.collegedating.tokenmanagement.TokenOperation
 import com.example.collegedating.ui.theme.primary
 import com.example.collegedating.viewmodel.MainViewModel
 import com.yalantis.ucrop.UCrop
@@ -89,7 +92,11 @@ import java.util.Locale
 @SuppressLint("UnrememberedMutableInteractionSource")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileDetails(navController: NavHostController, mainViewModel: MainViewModel) {
+fun ProfileDetails(
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+    tokenManagement: TokenManagement
+) {
     val localConfig = LocalConfiguration.current
     val screenHeight = localConfig.screenHeightDp
     val screenWidth = localConfig.screenWidthDp
@@ -97,6 +104,31 @@ fun ProfileDetails(navController: NavHostController, mainViewModel: MainViewMode
     val firstname = remember {
         mutableStateOf("")
     }
+
+    val loading = remember { mutableStateOf(false) }
+
+    // error
+    val error = remember { mutableStateOf("") }
+
+    // state
+    val state = mainViewModel.basicUserDetailsState.collectAsState()
+    state.value.data?.let {
+        if (it == "0") {
+            TokenOperation.saveSteps(
+                tokenManagement, step = 2
+            )
+            navController.navigate(Screen.GenderSelection.name)
+        } else {
+            loading.value = false
+            error.value = it
+        }
+    }
+
+    state.value.e?.let {
+        loading.value  = false
+        error.value = it.message.toString()
+    }
+
 
     val lastname = remember {
         mutableStateOf("")
@@ -239,6 +271,14 @@ fun ProfileDetails(navController: NavHostController, mainViewModel: MainViewMode
 
                 Spacer(modifier = Modifier.height((screenHeight / 18).dp))
 
+                if (error.value.isNotEmpty()) {
+                    Text(
+                        error.value,
+                        color = Color.Red,
+                        modifier = Modifier.padding((screenHeight / 88).dp)
+                    )
+                }
+
                 CustomOutlineFields(
                     state = firstname,
                     label = "First Name",
@@ -327,8 +367,10 @@ fun ProfileDetails(navController: NavHostController, mainViewModel: MainViewMode
 
 
 
+
                 Spacer(modifier = Modifier.height((screenHeight / 10).dp))
 
+                if(!loading.value){
                 CustomButton(
                     color = primary,
                     textColor = Color.White,
@@ -339,24 +381,45 @@ fun ProfileDetails(navController: NavHostController, mainViewModel: MainViewMode
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 ) {
-                  if (firstname.value.length>1 && lastname.value.length>1)
-                    selectedCollege.value?.let {
-                        BasicProfileDetails(
-                            firstName = firstname.value,
-                            lastName = lastname.value,
-                            dob = datePickerState.selectedDateMillis.toString(),
-                            collegeId = it.id,
-                            collegeName = it.collegeName
-                        )
-                    }?.let {
-                        mainViewModel.sendBasicUserDetails(
-                            image = croppedImage!!,
-                            basicProfileDetails = it
-                        )
+                    if (firstname.value.length > 1) {
+                        if (selectedCollege.value != null) {
+                            if (datePickerState.selectedDateMillis != null) {
+                                val basicProfileDetails =
+                                    croppedImage?.let { bitmapToByteArray(it) }?.let {
+                                        BasicProfileDetails(
+                                            image = it,
+                                            firstName = firstname.value,
+                                            lastName = lastname.value,
+                                            collegeId = selectedCollege.value!!.id,
+                                            collegeName = selectedCollege.value!!.collegeName,
+                                            dob = datePickerState.selectedDateMillis.toString()
+                                        )
+                                    }
+                                if (basicProfileDetails != null) {
+                                    loading.value = true
+                                    mainViewModel.sendBasicUserDetails(
+                                        basicProfileDetails = basicProfileDetails
+                                    )
+                                }
+                            } else {
+                                mainViewModel.reset()
+                                error.value = "Please fill your D.O.B to proceed"
+                            }
+                        } else {
+                            mainViewModel.reset()
+                            error.value = "Select Your Institution to proceed"
+                        }
+
+                    } else {
+
+                        mainViewModel.reset()
+                        error.value = "First name length should be greater than 1"
                     }
                 }
 
-
+            }else{
+                LoadingScreen(Modifier.align(Alignment.CenterHorizontally))
+            }
 
 
 

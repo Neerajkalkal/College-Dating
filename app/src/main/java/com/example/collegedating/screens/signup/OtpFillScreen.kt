@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.collegedating.R
+import com.example.collegedating.components.BackButton
 import com.example.collegedating.navigation.Screen
 import com.example.collegedating.screens.loadingscreen.LoadingScreen
 import com.example.collegedating.ui.theme.primary
@@ -162,21 +163,11 @@ fun OtpScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // back Button
-                Surface(
-                    onClick = {
-                        navController.popBackStack()
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    border = BorderStroke(width = 0.5.dp, color = Color.LightGray),
-                    modifier = Modifier.align(Alignment.Start)
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        contentDescription = "",
-                        tint = primary,
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
+            BackButton(
+                modifier =  Modifier.align(Alignment.Start)
+            ) {
+                navController.popBackStack()
+            }
 
 
                 // Timer

@@ -123,7 +123,6 @@ class MainViewModel(private val tokenManagement: TokenManagement) : ViewModel() 
         _basicUserDetailsState
 
     fun sendBasicUserDetails(
-        image: Bitmap,
         basicProfileDetails: BasicProfileDetails
 
     ) {
@@ -131,7 +130,6 @@ class MainViewModel(private val tokenManagement: TokenManagement) : ViewModel() 
 
             tokenManagement.getAccessToken()?.let {
                 NetworkCalls.uploadUserBasicDetails(
-                    image = image,
                     basicProfileDetails = basicProfileDetails,
                     token = it,
                     uploadState = _basicUserDetailsState
@@ -144,6 +142,7 @@ class MainViewModel(private val tokenManagement: TokenManagement) : ViewModel() 
     fun reset(
 
     ) {
+        _basicUserDetailsState.value = DataOrException()
         _getCollegeList.value = DataOrException()
         _otpRequestState.value = DataOrException()
         _otpVerificationState.value = DataOrException()

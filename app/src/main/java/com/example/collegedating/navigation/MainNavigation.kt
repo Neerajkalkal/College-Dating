@@ -2,7 +2,6 @@ package com.example.collegedating.navigation
 
 
 import android.util.Log
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -82,7 +81,8 @@ fun MainNavigation(mainViewModel: MainViewModel, tokenManagement: TokenManagemen
             )
         }
         composable(route = Screen.ProfileDetails.name) {
-            ProfileDetails(navController, mainViewModel)
+            ProfileDetails(navController, mainViewModel,
+                tokenManagement)
         }
 
         composable(route = Screen.GenderSelection.name) {

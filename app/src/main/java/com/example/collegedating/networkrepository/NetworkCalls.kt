@@ -241,39 +241,45 @@ object NetworkCalls {
 
     // upload the image and the data
     suspend fun uploadUserBasicDetails(
-        image: Bitmap,
         basicProfileDetails: BasicProfileDetails,
         token: String,
         uploadState: MutableStateFlow<DataOrException<String, Exception>>
     ) {
         uploadState.value = DataOrException(loading = true)
         val client = OkHttpClient()
-        val byteArray = bitmapToByteArray(image)
-        val mediaType = "image/jpeg".toMediaTypeOrNull()
-        val requestBody = RequestBody.create(mediaType, byteArray)
 
-        val multipartBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("image", "image.jpg", requestBody) // Adjust filename as needed
-            .addFormDataPart("details", basicProfileDetails.toString())
-            .build()
+
+        val requestBody = Gson().toJson(basicProfileDetails).toRequestBody("application/json".toMediaTypeOrNull())
+
+        Log.d("bhb",basicProfileDetails.toString())
 
         val request = Request.Builder()
             .url("${URL}newUser/addBasicDetails")
-            .post(multipartBody)
             .addHeader("Authorization", "Bearer $token")
+            .post(requestBody)
             .build()
 
         withContext(Dispatchers.IO) {
             try {
 
+                Log.d("token",token)
                 val response = client.newCall(request).execute()
                 if (response.isSuccessful) {
                     uploadState.value =
                         DataOrException(data = response.body?.string(), loading = false)
                 } else {
+
+                    // Handle specific error codes
+                    val errorMessage = when (response.code) {
+                        400 -> "Bad Request: The server could not understand the request."
+                        401 -> "Unauthorized: Authentication failed or user does not have permissions."
+                        403 -> "Forbidden: Access is denied."
+                        404 -> "Not Found: The requested resource could not be found."
+                        500 -> "Internal Server Error: The server encountered an error."
+                        else -> "Unexpected error: ${response.code}"
+                    }
                     uploadState.value =
-                        DataOrException(e = Exception("Something Went Wrong"), loading = false)
+                        DataOrException(e = Exception(errorMessage), loading = false)
                 }
             } catch (error: IOException) {
                 uploadState.value =
@@ -289,7 +295,7 @@ object NetworkCalls {
     }
 
 
-    private fun bitmapToByteArray(
+    fun bitmapToByteArray(
         bitmap: Bitmap,
         format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
     ): ByteArray {

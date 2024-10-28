@@ -7,8 +7,8 @@ object TokenOperation {
         tokenManagement: TokenManagement,
         token: Token
     ){
-        tokenManagement.saveRefreshToken(token.accessToken)
-        tokenManagement.saveAccessToken(token.refreshToken)
+        tokenManagement.saveRefreshToken(token.refreshToken)
+        tokenManagement.saveAccessToken(token.accessToken)
     }
 
   fun saveSteps(
