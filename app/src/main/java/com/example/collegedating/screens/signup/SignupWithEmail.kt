@@ -207,11 +207,12 @@ fun CustomTextField(
         onValueChange = { text.value = it },
         modifier = modifier,
         shape = roundedCornerShape,
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = containerColor,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-
+            unfocusedIndicatorColor = Color.Transparent,
+            cursorColor = Color.Black
         ),
         placeholder = { Text(text = placeholder) },
         maxLines = 1,

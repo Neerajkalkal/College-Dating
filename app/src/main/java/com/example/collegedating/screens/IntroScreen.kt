@@ -68,7 +68,6 @@ fun IntroScreen(navController: NavHostController) {
 
 
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
     val headerText = listOf("Algorithm", "Matches", "Security")

@@ -10,5 +10,10 @@ enum class Screen {
     EnableNotification,
     YourInterests,
     GenderSelection,
-    SignInScreen
+    SignInScreen,
+    MainHomeScreen,
+    CardSwipeScreen,
+    Requests,
+    Messages,
+    ProfileScreen
 }

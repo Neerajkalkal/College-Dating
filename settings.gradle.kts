@@ -22,4 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "College Dating"
 include(":app")
- 
+include(":NavigationBar")
+include(":navigationbar:lib")

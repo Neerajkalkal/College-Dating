@@ -28,7 +28,7 @@ fun MainNavigation(mainViewModel: MainViewModel, tokenManagement: TokenManagemen
     }
     val navController = rememberNavController()
     val step = tokenManagement.isNewUser()
-    Log.d("token valueee","$step")
+    Log.d("token valueee", "$step")
     NavHost(
         navController = navController, startDestination =
         if (!tokenManagement.getAccessToken().isNullOrBlank()) {
@@ -41,8 +41,7 @@ fun MainNavigation(mainViewModel: MainViewModel, tokenManagement: TokenManagemen
                     Screen.IntroScreen.name
                 }
             }
-        }
-        else{
+        } else {
             Screen.IntroScreen.name
         }
 
@@ -81,8 +80,10 @@ fun MainNavigation(mainViewModel: MainViewModel, tokenManagement: TokenManagemen
             )
         }
         composable(route = Screen.ProfileDetails.name) {
-            ProfileDetails(navController, mainViewModel,
-                tokenManagement)
+            ProfileDetails(
+                navController, mainViewModel,
+                tokenManagement
+            )
         }
 
         composable(route = Screen.GenderSelection.name) {
@@ -98,11 +99,15 @@ fun MainNavigation(mainViewModel: MainViewModel, tokenManagement: TokenManagemen
                 mainViewModel
             )
         }
-
         // sign in screen
         composable(route = Screen.SignInScreen.name) {
             SignInScreen(navController)
         }
+        composable(route = Screen.MainHomeScreen.name) {
+            HomeNavigation()
+        }
+
+
     }
 
 }

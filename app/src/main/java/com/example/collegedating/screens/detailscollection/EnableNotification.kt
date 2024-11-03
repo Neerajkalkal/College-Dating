@@ -3,6 +3,7 @@ package com.example.collegedating.screens.detailscollection
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.collegedating.R
+import com.example.collegedating.navigation.Screen
 import com.example.collegedating.screens.CustomButton
 import com.example.collegedating.ui.theme.primary
 
@@ -47,9 +49,6 @@ fun EnableNotification(navController: NavHostController) {
         mutableStateOf(false)
     }
 
-    val gender = remember {
-        mutableIntStateOf(0)
-    }
 
     val dpOffset by animateDpAsState(
         targetValue = if (isVisible.value) 0.dp else (-360).dp,
@@ -78,7 +77,11 @@ fun EnableNotification(navController: NavHostController) {
                     text = "Skip",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .clickable {
+                            navController.navigate(Screen.MainHomeScreen.name)
+                        },
                     color = primary
 
                 )

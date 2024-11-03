@@ -16,16 +16,19 @@ import androidx.compose.ui.unit.dp
 import com.example.collegedating.ui.theme.primary
 
 @Composable
-fun BackButton(modifier: Modifier,
-               padding :Int=10,
-    onClick:()->Unit ){
+fun BackButton(
+    modifier: Modifier,
+    padding: Int = 10,
+    onClick: () -> Unit
+) {
     Surface(
+        color = Color.White,
         onClick = {
-           onClick()
+            onClick()
         },
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(width = 0.5.dp, color = Color.LightGray),
-        modifier =modifier
+        modifier = modifier
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -35,21 +38,25 @@ fun BackButton(modifier: Modifier,
         )
     }
 }
+
 @Composable
-fun SmallButton(modifier: Modifier,
-               padding :Int=10,
-                image:Int,
-               onClick:()->Unit ){
+fun SmallButton(
+    modifier: Modifier,
+    padding: Int = 10,
+    image: Int,
+    onClick: () -> Unit
+) {
     Surface(
+        color = Color.White,
         onClick = {
             onClick()
         },
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(width = 0.5.dp, color = Color.LightGray),
-        modifier =modifier
+        modifier = modifier
     ) {
         Icon(
-           painter = painterResource(image),
+            painter = painterResource(image),
             contentDescription = "",
             tint = primary,
             modifier = Modifier.padding(padding.dp)

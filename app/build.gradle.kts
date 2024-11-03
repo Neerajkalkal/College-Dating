@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -75,6 +77,8 @@ dependencies {
     implementation(libs.ucrop)
     implementation(libs.coil.compose)
 
+    implementation (libs.coil.gif)
+
 
     // token service
     implementation(libs.androidx.security.crypto)
@@ -84,6 +88,14 @@ dependencies {
 
 // json convertor
     implementation(libs.gson)
+
+
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+
+
 
 
 

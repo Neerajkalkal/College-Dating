@@ -86,13 +86,15 @@ fun UsernameScreen(
 
     sendingState.value.data?.let {
         if (it.accessToken.isNotEmpty()) {
-            TokenOperation.saveToken(
-                token = it,
-                tokenManagement = tokenManagement
-            )
+            LaunchedEffect(Unit) {
+                TokenOperation.saveToken(
+                    token = it,
+                    tokenManagement = tokenManagement
+                )
 
-            TokenOperation.saveSteps(tokenManagement=tokenManagement, step = 1)
-            navController.navigate(route = Screen.ProfileDetails.name)
+                TokenOperation.saveSteps(tokenManagement = tokenManagement, step = 1)
+                navController.navigate(route = Screen.ProfileDetails.name)
+            }
         } else {
             loading.value = false
             error.value = it.status
@@ -176,11 +178,12 @@ fun UsernameScreen(
                             shape = RoundedCornerShape(10.dp)
                         ),
                     shape = RectangleShape,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.Black
                     ),
                     placeholder = { Text(text = "Place Your Username") },
                     maxLines = 1,
@@ -236,8 +239,7 @@ fun UsernameScreen(
 
                 if (loading.value) {
                     LoadingScreen(modifier = Modifier.align(Alignment.CenterHorizontally))
-                }
-                else {
+                } else {
                     CustomButton(
                         color = primary,
                         textColor = Color.White,

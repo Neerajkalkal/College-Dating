@@ -69,7 +69,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.collegedating.R
 import com.example.collegedating.model.CollegeList.CollegeList
 import com.example.collegedating.model.CollegeList.CollegeListItem
@@ -113,11 +115,15 @@ fun ProfileDetails(
     // state
     val state = mainViewModel.basicUserDetailsState.collectAsState()
     state.value.data?.let {
+
         if (it == "0") {
-            TokenOperation.saveSteps(
-                tokenManagement, step = 2
-            )
-            navController.navigate(Screen.GenderSelection.name)
+            LaunchedEffect(Unit) {
+                TokenOperation.saveSteps(
+                    tokenManagement, step = 2
+                )
+                navController.navigate(Screen.GenderSelection.name)
+            }
+
         } else {
             loading.value = false
             error.value = it
@@ -241,9 +247,12 @@ fun ProfileDetails(
                     .clickable { imagePickerLauncher.launch("image/*") }) {
                     if (croppedImage != null) {
                         Image(
-                            painter = rememberImagePainter(data = croppedImage, builder = {
-                                crossfade(true)
-                            }),
+                            painter = rememberAsyncImagePainter(
+                                ImageRequest.Builder(LocalContext.current).data(data = croppedImage)
+                                    .apply(block = fun ImageRequest.Builder.() {
+                                        crossfade(true)
+                                    }).build()
+                            ),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(110.dp)

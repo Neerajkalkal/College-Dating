@@ -66,7 +66,7 @@ fun OtpScreen(
     mainViewModel: MainViewModel,
     email: MutableState<String>,
 
-) {
+    ) {
 
     val localContext = LocalContext.current
     val localConfiguration = LocalConfiguration.current
@@ -100,9 +100,11 @@ fun OtpScreen(
             mainViewModel.reset()
 
         } else {
-            mainViewModel.setEmailToken(it)
-            navController.navigate(Screen.UsernameScreen.name)
-            otp.value = ""
+            LaunchedEffect(Unit) {
+                mainViewModel.setEmailToken(it)
+                navController.navigate(Screen.UsernameScreen.name)
+                otp.value = ""
+            }
         }
     }
 
@@ -163,11 +165,11 @@ fun OtpScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // back Button
-            BackButton(
-                modifier =  Modifier.align(Alignment.Start)
-            ) {
-                navController.popBackStack()
-            }
+                BackButton(
+                    modifier = Modifier.align(Alignment.Start)
+                ) {
+                    navController.popBackStack()
+                }
 
 
                 // Timer

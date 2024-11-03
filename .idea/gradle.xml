@@ -10,7 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/NavigationBar" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/navigationbar" />
+            <option value="$PROJECT_DIR$/navigationbar/lib" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

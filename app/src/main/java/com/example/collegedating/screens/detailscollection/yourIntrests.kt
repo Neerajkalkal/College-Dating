@@ -75,10 +75,10 @@ fun YourInterest(navController: NavHostController, mainViewModel: MainViewModel)
 
     val search = remember { mutableStateOf("") }
 
-    val selected = remember { mutableStateListOf<InterestsItem>() ?: mutableStateListOf() }
+    val selected = remember { mutableStateListOf<InterestsItem>() }
 
 
-    val searched = remember { mutableStateListOf<InterestsItem>() ?: mutableStateListOf() }
+    val searched = remember { mutableStateListOf<InterestsItem>()  }
 
     LaunchedEffect(Unit) {
         isVisible.value = true
@@ -121,19 +121,21 @@ fun YourInterest(navController: NavHostController, mainViewModel: MainViewModel)
                         onValueChange = { query ->
                             search.value = query
                             searched.clear()
-                            interests?.filter {
+                            interests.filter {
                                 it.name.contains(
                                     query,
                                     ignoreCase = true
                                 )
-                            }?.let { searched.addAll(it) }
+                            }.let { searched.addAll(it) }
                         },
                         modifier = Modifier,
                         shape = RoundedCornerShape(20.dp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
+                            unfocusedIndicatorColor = Color.Transparent,
+                            cursorColor = Color.Black
                         ),
                         placeholder = { Text(text = "#Search") },
                         maxLines = 1,
