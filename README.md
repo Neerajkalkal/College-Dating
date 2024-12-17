@@ -29,4 +29,4 @@ Contributing
 Contributions are welcome! Please fork the repository and submit a pull request with your changes. For major changes, open an issue to discuss the proposed changes.
 
 # Contact
-For any inquiries or feedback, reach out to me at mannu1392004@gmail.com.
+For any inquiries or feedback, reach out to me at kalkalneeraj1@gmail.com.
